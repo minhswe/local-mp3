@@ -1,11 +1,16 @@
 package vlu.android.numberseven.controllers;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 
 import vlu.android.numberseven.models.Song;
 
@@ -37,7 +42,7 @@ public class SongHandler extends SQLiteOpenHelper {
 
     }
 
-    public void addSong(Song song){
+    public void addSong(Song song) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SONG_NAME, song.getSongName());
@@ -48,5 +53,38 @@ public class SongHandler extends SQLiteOpenHelper {
         values.put(SONG_ALBUMART, song.getSongAlbumArt());
         db.insert(TABLE_SONG, null, values);
         db.close();
+    }
+
+    @SuppressLint("Range")
+    public ArrayList<Song> getSongForPlaylist(int playlistID) {
+        ArrayList<Song> songList = new ArrayList<>();
+        Cursor cursor = null;
+        SQLiteDatabase db = getReadableDatabase();
+        try {
+            // Query songs from your database based on playlistID
+            cursor = db.query(TABLE_SONG, null, "playlistID=?", new String[]{String.valueOf(playlistID)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    Song song = new Song();
+                    song.setSongID(cursor.getInt(cursor.getColumnIndex(SONG_ID)));
+                    song.setSongName(cursor.getString(cursor.getColumnIndex(SONG_NAME)));
+                    song.setSinger(cursor.getString(cursor.getColumnIndex(SONG_SINGER)));
+                    song.setPlaylistID(cursor.getInt(cursor.getColumnIndex(SONG_PLAYLISTID)));
+                    song.setSongPath(cursor.getString(cursor.getColumnIndex(SONG_PATH)));
+                    song.setDateAdded(cursor.getString(cursor.getColumnIndex(SONG_DATEADDED)));
+                    song.setSongAlbumArt(cursor.getString(cursor.getColumnIndex(SONG_ALBUMART)));
+
+                    // Add the song to the list
+                    songList.add(song);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("SongHandler", "Error fetching songs for playlist", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return songList;
     }
 }

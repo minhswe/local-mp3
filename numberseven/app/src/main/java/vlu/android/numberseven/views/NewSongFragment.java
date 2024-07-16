@@ -28,6 +28,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
@@ -58,9 +59,13 @@ public class NewSongFragment extends Fragment {
     Spinner spnPlaylist;
     PlaylistHandler playlistHandler;
     SongHandler songHandler;
-    ArrayList<Playlist> playlistArrayListGlobal;
+
+    PlaylistSpinnerAdapter playlistSpinnerAdapter;
+
+    SongRecyclerViewAdapter songRecyclerViewAdapter;
 
     Song song;
+    int selectedPlaylistID;
 
     public NewSongFragment() {
         // Required empty public constructor
@@ -72,7 +77,7 @@ public class NewSongFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_song, container, false);
         controls(view);
         events();
-        User user  = new User("quangminh", "123", "Quang Minh", "abc@gmaill.com");
+        User user = new User("quangminh", "123", "Quang Minh", "abc@gmaill.com");
         return view;
     }
 
@@ -83,10 +88,12 @@ public class NewSongFragment extends Fragment {
         btnBrowseSong = view.findViewById(R.id.btnBrowseSong);
         btnAddSong = view.findViewById(R.id.btnAddSong);
         rcvSongList = view.findViewById(R.id.rcvSongList);
+        rcvSongList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         ivAlbumArt = view.findViewById(R.id.ivAlbumArt);
         spnPlaylist = view.findViewById(R.id.spnPlaylist);
         playlistHandler = new PlaylistHandler(getActivity(), "number7", null, 1);
-//        loadPlaylistDataOnSpinner();
+        loadPlaylistDataOnSpinner();
+//        loadSongForRecyclerView(selectedPlaylistID);
     }
 
     private void events() {
@@ -102,19 +109,26 @@ public class NewSongFragment extends Fragment {
             public void onClick(View v) {
                 songHandler = new SongHandler(getActivity(), "number7", null, 1);
                 songHandler.addSong(song);
+                loadSongForRecyclerView(selectedPlaylistID);
                 Toast.makeText(getActivity(), "Song added successfully", Toast.LENGTH_SHORT).show();
             }
         });
 
-//        spnPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//
-//            }
-//        });
-    }
+        spnPlaylist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Playlist selectedPlaylist = (Playlist) parent.getItemAtPosition(position);
+                selectedPlaylistID = selectedPlaylist.getPlaylistID();
+                loadSongForRecyclerView(selectedPlaylistID);
+                Toast.makeText(getActivity(), "Selected Playlist ID: " + selectedPlaylistID, Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
 
 
     private void openFilePicker() {
@@ -202,7 +216,7 @@ public class NewSongFragment extends Fragment {
         return result;
     }
 
-    void loadPlaylistDataOnSpinner(){
+    void loadPlaylistDataOnSpinner() {
         ArrayList<Playlist> playlists = new ArrayList<>();
         playlists = playlistHandler.getAllPlaylist();
         if (playlists == null || playlists.isEmpty()) {
@@ -212,24 +226,25 @@ public class NewSongFragment extends Fragment {
                     getActivity(),
                     android.R.layout.simple_spinner_dropdown_item,
                     stringArrayList
-                    );
-            spnPlaylist.setAdapter(spinnerAdapter);
-        } else {
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
-                    getActivity(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    playlistToString(playlists)
             );
             spnPlaylist.setAdapter(spinnerAdapter);
+        } else {
+            playlistSpinnerAdapter = new PlaylistSpinnerAdapter(
+                    getActivity(),
+                    playlists
+            );
+            spnPlaylist.setAdapter(playlistSpinnerAdapter);
         }
     }
 
-    ArrayList<String> playlistToString(ArrayList<Playlist> playlists){
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        for (Playlist playlist : playlists){
-            String str = playlist.getPlaylistName();
-            stringArrayList.add(str);
+    void loadSongForRecyclerView(int selectedPlaylistID){
+        songHandler = new SongHandler(getActivity(), "number7", null, 1);
+        ArrayList<Song> songArrayList = songHandler.getSongForPlaylist(selectedPlaylistID);
+        if (songArrayList != null) {
+            songRecyclerViewAdapter = new SongRecyclerViewAdapter(getActivity(), songArrayList);
+            rcvSongList.setAdapter(songRecyclerViewAdapter);
+        } else {
+            rcvSongList.setAdapter(null);
         }
-        return stringArrayList;
     }
 }
