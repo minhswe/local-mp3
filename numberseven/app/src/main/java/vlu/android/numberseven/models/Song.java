@@ -1,6 +1,9 @@
 package vlu.android.numberseven.models;
 
-public class Song {
+import java.io.Serializable;
+
+public class Song  implements Serializable {
+    private static final long serialVersionUID = 1L;
     int songID;
     String songName;
     String singer;

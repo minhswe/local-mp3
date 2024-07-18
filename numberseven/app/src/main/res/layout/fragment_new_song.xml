@@ -11,6 +11,8 @@
     <SearchView
         android:id="@+id/svSong"
         android:layout_width="match_parent"
+        android:queryHint="Search songs..."
+        android:background="@android:color/darker_gray"
         android:layout_height="70dp" />
 
     <TextView
@@ -19,6 +21,8 @@
         android:layout_height="wrap_content"
         android:textSize="10pt"
         android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginBottom="5dp"
         android:text="Song Information" />
 
     <EditText
@@ -27,6 +31,10 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:background="@drawable/white_border"
+        android:layout_marginBottom="5dp"
         android:hint="Song Name" />
 
     <EditText
@@ -35,6 +43,10 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:background="@drawable/white_border"
+        android:layout_marginBottom="5dp"
         android:hint="Singer (Optional)" />
 
     <ImageView
@@ -49,12 +61,15 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="10pt"
+        android:textColor="@color/white"
         android:text="Playlist" />
 
     <Spinner
         android:id="@+id/spnPlaylist"
         android:layout_width="250dp"
-        android:layout_height="40dp" />
+        android:background="@drawable/white_border"
+        android:layout_height="50dp"
+        />
 
     <TextView
         android:id="@+id/textView3"
@@ -62,6 +77,7 @@
         android:layout_height="wrap_content"
         android:textSize="10pt"
         android:textStyle="bold"
+        android:textColor="@color/white"
         android:text="Function keys" />
 
     <LinearLayout
@@ -74,6 +90,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_gradient_color_background"
             android:text="Browse" />
 
         <Button
@@ -81,6 +99,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_gradient_color_background"
             android:text="Save" />
 
     </LinearLayout>

@@ -16,10 +16,9 @@ import vlu.android.numberseven.R;
 import vlu.android.numberseven.models.Playlist;
 
 public class PlaylistSpinnerAdapter extends ArrayAdapter<Playlist> {
+
     private Context context;
     private ArrayList<Playlist> playlists;
-
-
 
     public PlaylistSpinnerAdapter(@NonNull Context context, ArrayList<Playlist> playlists) {
         super(context, R.layout.playlist_spinner_item, playlists);
@@ -30,24 +29,31 @@ public class PlaylistSpinnerAdapter extends ArrayAdapter<Playlist> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return createViewFromResource(position, convertView, parent, R.layout.playlist_spinner_item);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.playlist_spinner_item, parent, false);
+        }
+
+        TextView tvPlaylistName = convertView.findViewById(R.id.tvSpinnerPlaylisName);
+        Playlist playlist = getItem(position);
+        if (playlist != null) {
+            tvPlaylistName.setText(playlist.getPlaylistName());
+        }
+
+        return convertView;
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return createViewFromResource(position, convertView, parent, R.layout.playlist_spinner_item);
-    }
-
-    private View createViewFromResource(int position, @Nullable View convertView, @NonNull ViewGroup parent, int resource) {
-        View view = convertView;
-        if (view == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            view = inflater.inflate(resource, parent, false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.playlist_spinner_dropdown, parent, false);
         }
 
-        Playlist playlist = playlists.get(position);
-        TextView tvPlaylistName = view.findViewById(R.id.tvSpinnerPlaylisName);
-        tvPlaylistName.setText(playlist.getPlaylistName());
-        return view;
+        TextView tvPlaylistName = convertView.findViewById(R.id.tvSpinnerPlaylisName);
+        Playlist playlist = getItem(position);
+        if (playlist != null) {
+            tvPlaylistName.setText(playlist.getPlaylistName());
+        }
+
+        return convertView;
     }
 }

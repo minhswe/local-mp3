@@ -3,13 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <TextView
         android:id="@+id/tvSpinnerPlaylisName"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:padding="8dp"
         android:textSize="10pt"
         android:text="playlist"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/black" />
 </RelativeLayout>

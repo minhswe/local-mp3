@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:padding="16dp"
+    tools:context=".views.SongDetailActivity">
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/background_border"
+        android:padding="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/ivSongDetailAlbumArt"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/music_icon"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/tvSongDetailNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Song Name"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+
+        <EditText
+            android:id="@+id/edtSongDetailName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Name" />
+
+        <TextView
+            android:id="@+id/tvSongDetailSingerLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Singer"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edtSongDetailSinger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="singer"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:padding="8dp"
+            android:background="@drawable/text_background" />
+
+        <TextView
+            android:id="@+id/tvSongDetailPathLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Song Path"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edtSongDetailPath"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SongPath"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:padding="8dp"
+            android:background="@drawable/text_background" />
+
+        <TextView
+            android:id="@+id/tvSongDetailDateAddedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Date Added"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edtSongDetailDateAdded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date added"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:padding="8dp"
+            android:background="@drawable/text_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnUpdateSong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Save changes" />
+
+            <Button
+                android:id="@+id/btnDeleteSong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/holo_red_dark"
+                android:textColor="@color/white"
+                android:text="Delete" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

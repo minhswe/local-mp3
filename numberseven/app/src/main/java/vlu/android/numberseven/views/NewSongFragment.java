@@ -1,6 +1,7 @@
 package vlu.android.numberseven.views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
@@ -63,12 +64,28 @@ public class NewSongFragment extends Fragment {
     PlaylistSpinnerAdapter playlistSpinnerAdapter;
 
     SongRecyclerViewAdapter songRecyclerViewAdapter;
-
+    private static final String ARG_USERNAME = "username";
     Song song;
+
+    String username;
     int selectedPlaylistID;
 
     public NewSongFragment() {
         // Required empty public constructor
+    }
+
+    public static NewSongFragment newInstance(String username){
+        NewSongFragment newSongFragment = new NewSongFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_USERNAME, username);
+        newSongFragment.setArguments(args);
+        return newSongFragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadSongForRecyclerView(selectedPlaylistID);
     }
 
     @Override
@@ -77,7 +94,10 @@ public class NewSongFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_song, container, false);
         controls(view);
         events();
-        User user = new User("quangminh", "123", "Quang Minh", "abc@gmaill.com");
+        if (getArguments() != null) {
+            username = getArguments().getString(ARG_USERNAME);
+        }
+//        User user = new User("quangminh", "123", "Quang Minh", "abc@gmaill.com");
         return view;
     }
 
@@ -107,10 +127,24 @@ public class NewSongFragment extends Fragment {
         btnAddSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                songHandler = new SongHandler(getActivity(), "number7", null, 1);
-                songHandler.addSong(song);
-                loadSongForRecyclerView(selectedPlaylistID);
-                Toast.makeText(getActivity(), "Song added successfully", Toast.LENGTH_SHORT).show();
+//                songHandler = new SongHandler(getActivity(), "number7", null, 1);
+//                songHandler.addSong(selectedPlaylistID,song);
+//                loadSongForRecyclerView(selectedPlaylistID);
+//                Toast.makeText(getActivity(), "Song added successfully", Toast.LENGTH_SHORT).show();
+                if (song != null) {
+                    songHandler = new SongHandler(getActivity(), "number7", null, 1);
+                    songHandler.addSong(selectedPlaylistID, song);
+                    loadSongForRecyclerView(selectedPlaylistID);
+                    Toast.makeText(getActivity(), "Song added successfully", Toast.LENGTH_SHORT).show();
+
+                    // Clear input fields and reset album art
+                    edtSongName.setText("");
+                    edtSinger.setText("");
+                    ivAlbumArt.setImageResource(R.drawable.music_icon);
+                    song = null; // Reset song object
+                } else {
+                    Toast.makeText(getActivity(), "No song selected. Please browse and select a song first.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -130,7 +164,6 @@ public class NewSongFragment extends Fragment {
         });
     }
 
-
     private void openFilePicker() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("audio/*");
@@ -140,7 +173,6 @@ public class NewSongFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == PICK_FILE_REQUEST && resultCode == getActivity().RESULT_OK && data != null) {
             Uri fileUri = data.getData();
             if (fileUri != null) {
@@ -156,7 +188,7 @@ public class NewSongFragment extends Fragment {
                     ivAlbumArt.setImageBitmap(albumArt);
                     albumArtPath = saveAlbumArtToFile(albumArt, title); // Save the album art and get the file path
                 } else {
-                    ivAlbumArt.setImageResource(R.drawable.baseline_add_box_24); // Set default image if no album art found
+                    ivAlbumArt.setImageResource(R.drawable.music_icon); // Set default image if no album art found
                 }
 
                 String fileName = getFileName(fileUri);

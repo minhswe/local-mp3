@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@drawable/gradient_color_background"
+    tools:context=".views.LoginActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="15pt"
+        android:padding="12dp"
+        android:text="Login" />
+
+    <EditText
+        android:id="@+id/edtTenDangNhap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
+        android:textColorHint="@color/white"
+        android:background="@drawable/rounded_edittext_background"
+        android:padding="12dp"
+        android:hint="Username"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edtMatKhau"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
+        android:textColorHint="@color/white"
+        android:background="@drawable/rounded_edittext_background"
+        android:padding="12dp"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <CheckBox
+        android:id="@+id/chkLuuThongTin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Information Login"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_button_background"
+        android:textStyle="bold"
+        android:padding="12dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/txtThongBao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#FF0000"
+        android:visibility="gone" />
+
+</LinearLayout>

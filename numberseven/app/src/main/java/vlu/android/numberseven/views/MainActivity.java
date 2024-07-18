@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,13 +39,18 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolBar;
     NavigationView navigationView;
     FrameLayout frameLayout;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        username = getIntent().getStringExtra("USERNAME");
         controls();
         events();
+        View headerView = navigationView.getHeaderView(0);
+        TextView tvUsername = headerView.findViewById(R.id.tvUsername);
+        tvUsername.setText("Hi, " + username);
     }
 
     void controls() {
@@ -71,7 +77,17 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.nav_addSong){
-                    loadFragment(new NewSongFragment());
+                    loadFragment(NewSongFragment.newInstance(username));
+                    return true;
+                } else if (id == R.id.nav_user_detail){
+                    loadFragment(UserDetailFragment.newInstance(username));
+                    return true;
+                }else if (id == R.id.nav_user_exit) {
+                    // Xử lý đăng xuất và chuyển về HomeActivity
+                    Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
                     return true;
                 }
                 return false;
@@ -85,5 +101,14 @@ public class MainActivity extends AppCompatActivity {
         ft.replace(R.id.nav_frameLayout, fragment);
         ft.commit();
         drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

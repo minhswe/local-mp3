@@ -42,7 +42,20 @@ public class SongHandler extends SQLiteOpenHelper {
 
     }
 
-    public void addSong(Song song) {
+    public void addSong(int selectedPlaylistID,Song song) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(SONG_NAME, song.getSongName());
+        values.put(SONG_SINGER, song.getSinger());
+        values.put(SONG_PLAYLISTID, selectedPlaylistID);
+        values.put(SONG_PATH, song.getSongPath());
+        values.put(SONG_DATEADDED, song.getDateAdded());
+        values.put(SONG_ALBUMART, song.getSongAlbumArt());
+        db.insert(TABLE_SONG, null, values);
+        db.close();
+    }
+
+    public void updateSong(Song song) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SONG_NAME, song.getSongName());
@@ -51,7 +64,9 @@ public class SongHandler extends SQLiteOpenHelper {
         values.put(SONG_PATH, song.getSongPath());
         values.put(SONG_DATEADDED, song.getDateAdded());
         values.put(SONG_ALBUMART, song.getSongAlbumArt());
-        db.insert(TABLE_SONG, null, values);
+
+        // Update the song record
+        db.update(TABLE_SONG, values, SONG_ID + "=?", new String[]{String.valueOf(song.getSongID())});
         db.close();
     }
 
@@ -87,4 +102,11 @@ public class SongHandler extends SQLiteOpenHelper {
         }
         return songList;
     }
+
+    public void deleteSong(int songID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_SONG, SONG_ID + "=?", new String[]{String.valueOf(songID)});
+        db.close();
+    }
+
 }
